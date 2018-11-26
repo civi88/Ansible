@@ -14,7 +14,7 @@
 
       - name: Extract yarn into /app/yarn/
         unarchive:
-          src: /app/yarn/yarn-v1.7.0.tar.gz
+          src: /app/yarn/yarn-v1.7.0.tar.gz #to change automate recognize version 
           dest: /app/yarn
           remote_src: yes
 
