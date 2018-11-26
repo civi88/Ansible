@@ -1,0 +1,37 @@
+---
+- hosts: host1
+  tasks:
+      - name: Create folder /app/dotnet
+        file:
+            path: /app/dotnet/2.1
+            state: directory
+
+#-------------Proper innstallation----------------------------            
+            
+      - name: Download dotnet package (2.1)
+        get_url:
+          url: https://download.microsoft.com/download/D/0/4/D04C5489-278D-4C11-9BD3-6128472A7626/dotnet-sdk-2.1.301-linux-x64.tar.gz
+          dest: /app/dotnet/2.1/
+          
+      - name: Extract dotnet into /app/dotnet/2.1
+        unarchive:
+          src: /app/dotnet/2.1/dotnet-sdk-2.1.301-linux-x64.tar.gz
+          dest: /app/dotnet/2.1
+          remote_src: yes
+
+#-------------Installation from yum----------------------------
+          
+      - name: Install the latest version of libicu from repository
+        yum:
+          name: libicu
+          state: latest
+
+          
+          
+#-------------Add PATH----------------------------
+
+      - name: Update bashrc for DotNet
+        lineinfile:
+          dest=/root/.bashrc
+          line="export PATH=$PATH:/app/dotnet/2.1"
+

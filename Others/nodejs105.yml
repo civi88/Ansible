@@ -1,0 +1,22 @@
+---
+- hosts: host1
+  tasks:
+      - name: Create folder
+        file:
+            path: /app/nodejs
+            state: directory
+
+      - name: Download latest package nodeJS
+        get_url:
+          url: https://nodejs.org/dist/v10.5.0/node-v10.5.0-linux-x64.tar.xz
+          dest: /app/nodejs/
+
+
+      - name: Extract NodeJS into /app/nodejs
+        unarchive:
+          src: /app/nodejs/node-v10.5.0-linux-x64.tar.xz
+          dest: /app/nodejs
+          remote_src: yes
+
+      - name: Change folder name
+        command: mv /app/nodejs/node-v10.5.0-linux-x64 /app/nodejs/10.5

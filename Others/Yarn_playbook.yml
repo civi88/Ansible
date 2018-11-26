@@ -1,0 +1,51 @@
+---
+- hosts: host1
+  tasks:
+      - name: Create folder
+        file:
+            path: /app/yarn
+            state: directory
+
+      - name: Download latest package yarn
+        get_url:
+          url: https://yarnpkg.com/latest.tar.gz
+          dest: /app/yarn/
+
+
+      - name: Extract yarn into /app/yarn/
+        unarchive:
+          src: /app/yarn/yarn-v1.7.0.tar.gz
+          dest: /app/yarn
+          remote_src: yes
+
+      - name: Change folder name
+        command: mv /app/yarn/yarn-v1.7.0 /app/yarn/1.5.1
+#-----------------NODEJS-----------------------------------
+
+      - name: Create folder
+        file:
+            path: /app/nodejs
+            state: directory
+
+      - name: Download latest package nodeJS
+        get_url:
+          url: https://nodejs.org/dist/v8.11.0/node-v8.11.0-linux-x64.tar.xz
+          dest: /app/nodejs/
+
+
+      - name: Extract NodeJS into /app/nodejs
+        unarchive:
+          src: /app/nodejs/node-v8.11.0-linux-x64.tar.xz
+          dest: /app/nodejs
+          remote_src: yes
+
+      - name: Change folder name
+        command: mv /app/nodejs/node-v8.11.0-linux-x64 /app/nodejs/8.11
+
+#-------------Add PATH----------------------------
+
+      - name: Update bashrc for NodeJS and Yarn
+        lineinfile:
+          dest=/root/.bashrc
+          line="export PATH=$PATH:/app/yarn/1.7.0/bin:/app/nodejs/8.11/bin"
+          
